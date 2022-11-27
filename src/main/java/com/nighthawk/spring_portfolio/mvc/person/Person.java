@@ -98,7 +98,8 @@ public class Person {
 
     public String toString() {
         return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name
-                + ", " + "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + " }");
+                + ", " + "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + ", " + "\"weight\": "
+                + this.weight + " }");
     }
 
     // A custom getter to return age from dob attribute
