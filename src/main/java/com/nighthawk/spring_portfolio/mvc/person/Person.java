@@ -64,7 +64,7 @@ public class Person {
     @Size(min = 2, max = 30, message = "Name (2 to 30 chars)")
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dob;
 
     @Column(unique = false)
@@ -72,6 +72,9 @@ public class Person {
 
     @Column(unique = false)
     private int weight;
+
+    @Column(unique = false)
+    private int income;
 
     /*
      * HashMap is used to store JSON for daily "stats"
@@ -87,23 +90,23 @@ public class Person {
     private Map<String, Map<String, Object>> stats = new HashMap<>();
 
     // Constructor used when building object from an API
-    public Person(String name, String email, String password, Date dob, int height, int weight) {
-        this.name = name;
+    public Person(String email, String password, String name, Date dob, int height, int weight, int income) {
         this.email = email;
         this.password = password;
+        this.name = name;
         this.dob = dob;
         this.height = height;
         this.weight = weight;
+        this.income = income;
     }
 
     public String toString() {
         return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name
                 + ", " + "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + ", " + "\"weight\": "
-                + this.weight + " }");
+                + this.weight + " , " + "\"income\": " + this.income + " }");
     }
 
-    // A custom getter to return age from dob attribute
-    public int getAge() {
+    public int getAge() { // getAge with the age creator
         if (this.dob != null) {
             LocalDate birthDay = this.dob.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             return Period.between(birthDay, LocalDate.now()).getYears();
@@ -111,27 +114,24 @@ public class Person {
         return -1;
     }
 
-    public String getAgeToString() {
+    public String getAgeToString() { // turns it into a string
         return ("{ \"name\": " + this.name + " ," + "\"age\": " + this.getAge() + " }");
     }
 
-    public int getWH() {
-        int WH = (int) (this.weight / this.height);
-        return WH;
-    }
-
-    public String getWHToString() {
-        return ("{ \"name\": " + this.name + " ," + "\"WH\": " + this.getWH() + " }");
+    public String getIncomeToString() {
+        return ("{ \"name\": " + this.name + " ," + "\"income\": " + this.income + " }");
     }
 
     public static void main(String[] args) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date myDate = sdf.parse("2006-08-26");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        Date myDate = sdf.parse("08-26-2006");
 
-        Person allArgsPerson = new Person("Vidhi Kulkarni", "vidhik123@yahoo.com", "09876", myDate, 60, 100);
+        Person person = new Person("vidhik@gmail.com", "pass123", "Vidhi Kulkarni", myDate, 64, 121, 1000000);
         Person noArgsPerson = new Person();
         System.out.println(noArgsPerson);
-        System.out.println(allArgsPerson);
+        System.out.println(person.toString());
+        System.out.println(person.getAgeToString());
+        System.out.println(person.getIncomeToString());
     }
 
 }
